@@ -1,0 +1,28 @@
+services:
+  vllm:
+    image: llm/vllm-openai:v0.10.1.1
+    ports:
+      - "8000:8000"
+    volumes:
+      - /tmp/webzer/assets:/tmp/webzer/assets
+      - ~/.cache/huggingface:/root/.cache/huggingface
+    environment:
+      - OMP_NUM_THREADS=8
+      - PYTHONUNBUFFERED=1
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    command: |
+      hfl/Qwen2.5-VL-3B-Instruct-GPTQ-Int4 
+      --trust-remote-code 
+      --host 0.0.0.0 
+      --max-model-len 32768 
+      --dtype bfloat16 
+      --gpu-memory-utilization 0.9 
+      --allowed-local-media-path "/tmp/webzer/assets/IMAGE"
+    restart: always
+

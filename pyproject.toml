@@ -1,0 +1,26 @@
+[project]
+name = "vllmdemo"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = "==3.12.*"
+dependencies = [
+    "bitsandbytes>=0.47.0",
+    "openai>=1.90.0",
+    "vllm>=0.10.1",
+]
+
+[dependency-groups]
+compile = ["flash-attn"]
+
+[tool.uv]
+no-build-isolation-package = ["flash-attn"]
+default-groups = ["compile"]
+
+# [tool.uv.sources]
+# vllm = { git = "https://github.com/vllm-project/vllm.git", tag = "v0.10.1rc1" }
+
+[[tool.uv.dependency-metadata]]
+name = "flash-attn"
+requires-dist = ["torch", "einops"]
+
